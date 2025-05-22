@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>Алгоритм Флойда-Уоршелла</title>
+    <style>
+        body {
+            font-family: "Roboto";
+            background: linear-gradient(150deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: #000;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 150px 20px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 50px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: 400;
+            margin-bottom: 15px;
+            color: #00897b;
+            font-size: 26px;
+        }
+        textarea {
+            min-height: 120px;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 18px;
+            resize: vertical;
+            transition: border-color 0.3s;
+            margin-bottom: 30px;
+            color: #000;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2);
+        }
+        textarea::placeholder {
+            color: #aaa;
+        }
+        .example {
+            background-color: #e0f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #000;
+        }
+        .btn {
+            align-self: center;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            font-size: 20px;
+            font-weight: 400;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-family: "Roboto";
+        }
+        .btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .copy-btn {
+            position: absolute;
+            right: 20px;
+            bottom: 18px;
+            font-size: 25px;
+            background: none;
+            color: #1976d2;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: color 0.2s, background 0.2s;
+            outline: none;
+            z-index: 5;
+        }
+        .copy-btn:hover, .copy-btn:focus {
+            color: #0d47a1;
+            background: #f0f5ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h1>Алгоритм Флойда-Уоршелла</h1>
+            <form method="post" action="/calculate">
+                <label for="graph_data">Введите матрицу смежности:</label>
+                <div class="example">
+Формат: вводите матрицу смежности, где строки соответствуют вершинам, 
+а значения — весам рёбер (через пробел). Веса рёбер — любые целые или 
+вещественные числа, включая отрицательные. 999 означает отсутствие пути 
+(интерпретируется как ∞). Число строк и столбцов — количество вершин. На 
+главной диагонали — 0. Если пути нет, пишите 999.
+                </div>
+                <textarea 
+                    id="graph_data"  
+                    name="graph_data" 
+                    rows="4" 
+                    placeholder=
+"Пример:
+0 10 999 30
+999 0 5 999
+999 999 0 20
+999 999 999 0"></textarea>
+                <button type="submit" class="btn">Рассчитать кратчайшие пути</button>
+            </form>
+            <button type="button" class="copy-btn" onclick="copyExample()" title="Скопировать пример">📋</button>
+        </div>
+    </div>
+
+<script>
+function copyExample() {
+    const example = 
+`0 10 999 30
+999 0 5 999
+999 999 0 20
+999 999 999 0`;
+    navigator.clipboard.writeText(example);
+}
+</script>
+
+</body>
+</html>

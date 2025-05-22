@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>Результаты</title>
+    <style>
+        body {
+            font-family: "Roboto";
+            background: linear-gradient(150deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            padding: 25px;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        h1 {
+            color: #000000;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 36px;
+            font-weight: 600;
+        }
+        h3 {
+            color: #00897b;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 26px;
+            text-align: center;
+        }
+        table {
+            margin: 30px auto;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 12px 15px;
+            text-align: center;
+        } 
+        th {
+            background-color: #00897b;
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+        tr:hover {
+            background-color: #e8f5e9;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        li {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            margin: 0;
+            transition: transform 0.2s;
+        }
+        li:hover {
+            transform: translateY(-3px);
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 14px 25px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 20px;
+            transition: all 0.3s;
+            font-weight: 400;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .back-button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .error-message {
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Результаты алгоритма Флойда-Уоршелла</h1>
+
+            {% if result.message %}
+                <div class="error-message">{{ result.message }}</div>
+            {% endif %}
+
+            {% if result.distances %}
+                <div class="card">
+                    <h3>Матрица кратчайших расстояний</h3>
+                    <table>
+                        <tr>
+                            <th></th>
+                            {% for v in result.distances.keys() %}
+                                <th>{{ v }}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for u, row in result.distances.items() %}
+                            <tr>
+                                <th>{{ u }}</th>
+                                {% for v, dist in row.items() %}
+                                    <td>
+                                        {% if dist is infinite %}
+                                            ∞
+                                        {% else %}
+                                            {{ "%.2f"|format(dist) }}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                
+                <div class="card">
+                    <h3>Расстояния между узлами</h3>
+                    <ul>
+                        {% for u in result.distances.keys() %}
+                            {% for v in result.distances.keys() %}
+                                {% set dist = result.distances[u][v] %}
+                                <li>От узла {{ u }} до узла {{ v }}:
+                                    <strong>
+                                        {% if dist is infinite %}
+                                            ∞ (нет пути)
+                                        {% else %}
+                                            {{ "%.2f"|format(dist) }}
+                                        {% endif %}
+                                    </strong>
+                                </li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="button-container">
+                <a href="/" class="back-button">Вернуться на главную</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
